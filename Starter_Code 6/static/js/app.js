@@ -1,12 +1,15 @@
 // Build the metadata panel
 function buildMetadata(sample) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
+    console.log("Full metadata:", data.metadata); // Log the entire metadata array
 
     // get the metadata field
     var metadata = data.metadata;
 
     // Filter the metadata for the object with the desired sample number
     var result = metadata.filter(meta => meta.id == sample)[0];
+
+    console.log(`Metadata for sample ${sample}:`, result); // Log the filtered metadata for the selected sample
 
     // Use d3 to select the panel with id of `#sample-metadata`
     var panel = d3.select("#sample-metadata");
@@ -24,6 +27,7 @@ function buildMetadata(sample) {
 // function to build both charts
 function buildCharts(sample) {
   d3.json("https://static.bc-edx.com/data/dl-1-2/m14/lms/starter/samples.json").then((data) => {
+    console.log("Full samples dataset:", data.samples); // Log the entire samples array
 
     // Get the samples field
     var samples = data.samples;
@@ -31,10 +35,16 @@ function buildCharts(sample) {
     // Filter the samples for the object with the desired sample number
     var filteredSample = samples.filter(s => s.id === sample)[0];
 
+    console.log(`Filtered sample data for ${sample}:`, filteredSample); // Log the filtered sample data for the selected sample
+
     // Get the otu_ids, otu_labels, and sample_values
     var otu_ids = filteredSample.otu_ids;
     var otu_labels = filteredSample.otu_labels;
     var sample_values = filteredSample.sample_values;
+
+    console.log("OTU IDs:", otu_ids); // Log the otu_ids array
+    console.log("OTU Labels:", otu_labels); // Log the otu_labels array
+    console.log("Sample Values:", sample_values); // Log the sample_values array
 
     // Build a Bubble Chart
     var bubbleTrace = {
@@ -65,6 +75,8 @@ function buildCharts(sample) {
     // For the Bar Chart, map the otu_ids to a list of strings for your yticks
     var yticks = otu_ids.slice(0, 10).map(id => `OTU ${id}`).reverse();
 
+    console.log("Y-Ticks for Bar Chart:", yticks); // Log the yticks array for the bar chart
+
     // Build a Bar Chart
     var barTrace = {
       x: sample_values.slice(0, 10).reverse(),
@@ -90,6 +102,8 @@ function buildCharts(sample) {
 // Function to run on page load
 function init() {
   d3.json("https://static.bc-edx.com/data/dla-1-2/m14/lms/starter/samples.json").then((data) => {
+    console.log("Initial data load:", data); // Log the initial data loaded from the JSON
+
     // Get the names field
     var sampleNames = data.names;
 
@@ -104,6 +118,8 @@ function init() {
     // Get the first sample from the list
     var firstSample = sampleNames[0];
 
+    console.log("First sample selected:", firstSample); // Log the first sample chosen to build the initial charts and metadata
+
     // Build charts and metadata panel with the first sample
     buildCharts(firstSample);
     buildMetadata(firstSample);
@@ -116,6 +132,8 @@ function optionChanged(newSample) {
   buildCharts(newSample);
   buildMetadata(newSample);
 }
+
+console.log("New sample selected:", newSample); // Log the new sample ID whenever a new sample is selected
 
 // Initialise the dashboard
 init();

@@ -20,8 +20,8 @@ function buildMetadata(sample) {
     // Inside a loop, you will need to use d3 to append new
     // tags for each key-value in the filtered metadata.
     Object.entries(result).forEach(([key, value]) => {
-      panel.append("h6").text(`${key.toUpperCase()}: ${value}`);
-  });
+      panel.append("h6").text(`${key.toUpperCase()}: ${value}`);});
+})
 }
 
 // function to build both charts
@@ -62,11 +62,12 @@ function buildCharts(sample) {
     var bubbleData = [bubbleTrace];
 
     var bubbleLayout = {
-      title: 'OTU ID vs Sample Values',
+      title: 'Bacteria Cultures per Sample',
       showlegend: false,
       height: 600,
       width: 1200,
-      xaxis: { title: "OTU ID" }
+      xaxis: { title: "OTU ID" },
+      yaxis: { title: "Number of Bateria"}
     };
 
     // Render the Bubble Chart
@@ -89,7 +90,8 @@ function buildCharts(sample) {
     var barData = [barTrace];
 
     var barLayout = {
-      title: `Top 10 OTUs in Sample ${sample}`,
+      title: `Top 10 Bacteria Cultures Found ${sample}`,
+      xaxis: {title : 'Number of Bacteria' },
       margin: { t: 30, l: 150 }
     };
 
@@ -131,9 +133,9 @@ function optionChanged(newSample) {
   // Build charts and metadata panel each time a new sample is selected
   buildCharts(newSample);
   buildMetadata(newSample);
-}
+  console.log("New sample selected:", newSample);
 
-console.log("New sample selected:", newSample); // Log the new sample ID whenever a new sample is selected
+}
 
 // Initialise the dashboard
 init();
